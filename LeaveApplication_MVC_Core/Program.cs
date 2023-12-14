@@ -35,6 +35,7 @@ namespace LeaveApplication_MVC_Core
             {
                 options.LoginPath = "/Account/Login";
                 //options.AccessDeniedPath = "/Account/AccessDenied";
+                ///bgfgfghcghhggfghfgh
             });
 
             var app = builder.Build();
