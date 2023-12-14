@@ -1,0 +1,47 @@
+﻿@model LeaveApplication_MVC_Core.Models.LeaveRequestModel
+
+@{
+    ViewData["Title"] = "CreateLeave";
+}
+
+<h1>CreateLeave</h1>
+
+<h4>LeaveRequestModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateLeave">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="form-group">
+                <label asp-for="from" class="control-label"></label>
+                <input asp-for="from" class="form-control" />
+                <span asp-validation-for="from" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="to" class="control-label"></label>
+                <input asp-for="to" class="form-control" />
+                <span asp-validation-for="to" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="leaveRession" class="control-label"></label>
+                <input asp-for="leaveRession" class="form-control" />
+                <span asp-validation-for="leaveRession" class="text-danger"></span>
+            </div>
+            
+            
+            
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

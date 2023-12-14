@@ -1,0 +1,314 @@
+﻿@model IEnumerable<LeaveApplication_MVC_Core.Models.LeaveRequest>
+
+@{
+    ViewData["Title"] = "showLeave";
+    var value = 0;
+    var temp = 0;
+    short gm = 5;
+    short am = 4;
+    short manager = 3;
+    short teamleader = 2;
+
+}
+
+<h1>showLeave</h1>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Your Ression</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <textarea id="ression" name="ression" rows="6" cols="10" placeholder="Enter ression"></textarea>
+            <input type="hidden" id="first" name="first"/>
+            <input type="hidden" name="idString" id="idString" />
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="Approved" class="btn btn-primary" onclick="Approved()" data-bs-dismiss="modal">Approved</button>
+                <button type="button" id="Rejected" class="btn btn-primary" onclick="Rejected()" data-bs-dismiss="modal">Reject</button>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.from)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.to)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.leaveRession)
+            </th>         
+            @if(User.IsInRole("Gm"))
+            {
+                temp = --gm;
+                ++gm;
+                <th>
+                    @Html.DisplayNameFor(model => model.gmSatus)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.gmRession)
+                </th>
+            }
+            @if (User.IsInRole("Am") || temp == am)
+            {
+                temp = --am;
+                ++am;
+                <th>
+                    @Html.DisplayNameFor(model => model.amSatus)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.amRession)
+                </th>
+            }
+            @if(User.IsInRole("Manager") || temp == manager)
+            {
+                temp = --manager;
+                ++manager;
+                <th>
+                    @Html.DisplayNameFor(model => model.mSatus)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.mRession)
+                </th>
+            }
+            @if(User.IsInRole("Tl") || temp ==teamleader)
+            {
+                temp = 0;
+                <th>
+                    @Html.DisplayNameFor(model => model.tlSatus)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.tlRession)
+                </th>
+            }
+            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.from)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.to)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.leaveRession)
+            </td>
+
+                @if (User.IsInRole("Gm"))
+                {
+                    temp = --gm;
+                    
+                    ++gm;
+                    value = item.gmSatus;
+                    <td>
+                        @if (item.gmSatus == 3)
+                        {
+                            <span class="text-light text-center border-warning w-50 bg-warning rounded-1" style=" font-size:small; padding:2px">Pending</span>
+                            
+                        }
+                        else if (item.gmSatus == 2)
+                        {
+                            <span class="text-light text-center border-danger w-50 bg-danger rounded-1" style=" font-size:small; padding:2px">Reject</span>
+                        }
+                        else if (item.gmSatus == 1)
+                        {
+                            <span class="text-light text-center border-success w-50 bg-success rounded-1" style=" font-size:small; padding:2px">Approved</span>
+
+                        }
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.gmRession)
+                    </td>
+                }
+
+                @if(User.IsInRole("Am") || temp == am)
+                {
+                    
+                    temp = --am;
+                    if(value==0)
+                    {
+                        value = item.amSatus;
+                    }
+                    ++am;
+                     <td>
+                            @if (item.amSatus == 3)
+                            {
+                            <span class="text-light text-center border-warning w-50 bg-warning rounded-1" style=" font-size:small; padding:2px">Pending</span>
+                            }
+                        else if (item.amSatus == 2)
+                            {
+                            <span class="text-light text-center border-light w-50 bg-danger rounded-1" style=" font-size:small; padding:2px">Reject</span>
+                        }
+                        else if (item.amSatus == 1)
+                            {
+                            <span class="text-light text-center border-light w-50 bg-success rounded-1" style=" font-size:small; padding:2px">Approved</span>
+                        }
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.amRession)
+                    </td>
+                }
+                @if(User.IsInRole("Manager") || temp== manager)
+                {
+                    
+                    temp = --manager;
+                    if (value == 0)
+                    {
+                        value = item.mSatus;
+                    }
+                    ++manager;
+                    <td>
+                        @if (item.mSatus == 3)
+                        {
+                            <span class="text-light text-center border-warning w-50 bg-warning rounded-1" style=" font-size:small; padding:2px">Pending</span>
+                        }
+                        else if (item.mSatus == 2)
+                        {
+                            <span class="text-light text-center border-light w-50 bg-danger rounded-1" style=" font-size:small; padding:2px">Reject</span>
+                        }
+                        else if (item.mSatus == 1)
+                        {
+                            <span class="text-light text-center border-light w-50 bg-success rounded-1" style=" font-size:small; padding:2px">Approved</span>
+                        }
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.mRession)
+                    </td>
+                }
+            @if(User.IsInRole("Tl") || temp == teamleader)
+                {
+                    
+                    temp = 0;
+                    if (value == 0)
+                    {
+                        value = item.tlSatus;
+                    }
+                    <td>
+                    @if (item.tlSatus == 3)
+                    {
+                            <span class="text-light text-center border-warning w-50 bg-warning rounded-1" style=" font-size:small; padding:2px">Pending</span>
+                        }
+                    else if (item.tlSatus == 2)
+                    {
+                            <span class="text-light text-center border-light w-50 bg-danger rounded-1" style=" font-size:small; padding:2px">Reject</span>
+                        }
+                    else if (item.tlSatus == 1)
+                    {
+                            <span class="text-light text-center border-light w-50 bg-success rounded-1" style=" font-size:small; padding:2px">Approved</span>
+                        }
+                
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tlRession)
+                    </td>
+                }
+                
+            
+            @if(value == 3)
+            {
+                    <td>
+@*                         @Html.ActionLink("Approve", "Approved", new { id=item.leaveId }, new { @class = "btn btn-success"})
+                *@          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="approveFunction(@item.leaveId)">
+                            Approve
+                        </button>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="RejectFunction(@item.leaveId)" )">
+                            Reject
+                        </button>
+@*                         @Html.ActionLink("Reject", "Rejected", new { id=item.leaveId } , new { @class = "btn btn-danger"})
+ *@
+                    </td>
+                    value = 0;
+
+            }
+                else
+                {
+                    value = 0;
+                }
+            </tr>
+}
+    </tbody>
+</table>
+<script>
+    function approveFunction(leaveId)
+    { 
+        var value = leaveId;
+        $('#Rejected').hide(); 
+        $('#Approved').show();
+        $('#idString').val(value);
+    }
+    function RejectFunction(leaveId) {
+        $('#Approved').hide(); 
+        $('#Rejected').show();
+        var value = leaveId;
+        $('#idString').val(value);
+    }
+
+    function Approved() { 
+        var reason = $('#ression').val();
+        var leaveId = $('#idString').val();
+
+        $.ajax({
+            url: '/Leave/Approved',
+            type: 'POST', 
+            data: {
+                id: leaveId,
+                reason: reason
+            }, 
+            success: function (response) {
+                location.reload();
+            },
+            error: function (xhr, status, error) {
+                debugger;
+                if (xhr.status === 400) {
+                    // Bad Request (status code 400) - Display error message
+                    var errorMessage = xhr.responseText; // Fetch error message from response
+                    alert(errorMessage); // Display error message using Toastr or any other notification library
+                } 
+            }
+        });
+    }
+
+    function Rejected() {
+        var reason = $('#ression').val();
+        var leaveId = $('#idString').val();
+
+        $.ajax({
+            url: '/Leave/Rejected',
+            type: 'POST',
+            data: {
+                id: leaveId,
+                reason: reason
+            },
+            success: function (response) {
+                location.reload();
+            },
+            error: function (xhr, status, error) {
+                debugger;
+                if (xhr.status === 400) {
+                    // Bad Request (status code 400) - Display error message
+                    var errorMessage = xhr.responseText; // Fetch error message from response
+                    alert(errorMessage); // Display error message using Toastr or any other notification library
+                }
+            }
+        });
+    }
+
+
+</script>

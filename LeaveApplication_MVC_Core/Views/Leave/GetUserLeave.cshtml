@@ -1,0 +1,244 @@
+﻿@model IEnumerable<LeaveApplication_MVC_Core.Models.LeaveRequestModel>
+
+@{
+    ViewData["Title"] = "GetUserLeave";
+    var temp = 0;
+    short gm = 5;
+    short am = 4;
+    short manager = 3;
+    short teamleader = 2;
+}
+
+<h1>GetUserLeave</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.from)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.to)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.leaveRession)
+            </th>
+            @if (User.IsInRole("Tl") || User.IsInRole("Employee"))
+            {
+                temp = ++teamleader;
+                --teamleader;
+               if(!User.IsInRole("Tl"))
+                {
+                    <th>
+                        @Html.DisplayNameFor(model => model.tlSatus)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.tlRession)
+                    </th>
+                }
+            }
+            @if (User.IsInRole("Manager") || temp == manager || User.IsInRole("Employee"))
+            {
+                temp = ++manager;
+                --manager;
+               if(!User.IsInRole("Manager"))
+               {
+                    <th>
+                        @Html.DisplayNameFor(model => model.mSatus)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.mRession)
+                    </th>
+               }
+            }
+            @if (User.IsInRole("Am") || temp == am || User.IsInRole("Employee"))
+            {
+                temp = ++am;
+                --am;
+                if(!User.IsInRole("Am"))
+                {
+                    <th>
+                        @Html.DisplayNameFor(model => model.amSatus)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.amRession)
+                    </th>
+                }
+            }
+            @if (User.IsInRole("Gm") || temp == gm || User.IsInRole("Employee"))
+            {
+                if(!User.IsInRole("Gm"))
+                {
+                    <th>
+                        @Html.DisplayNameFor(model => model.gmSatus)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.gmRession)
+                    </th>
+                }
+            }
+            <th>
+                @Html.DisplayNameFor(model => model.hrSatus)
+            </th>
+            
+            
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.from)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.to)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.leaveRession)
+            </td>
+
+
+                @if (User.IsInRole("Tl") || User.IsInRole("Employee"))
+                {
+
+                    temp = ++teamleader;
+                    --teamleader;
+                    
+                   if(!User.IsInRole("Tl"))
+                   {
+                        <td>
+                            @if (item.tlSatus == 3)
+                            {
+                                <span class="text-light text-center border-warning w-50 bg-warning rounded-1" style=" font-size:small; padding:2px">Pending</span>
+                            }
+                            else if (item.tlSatus == 2)
+                            {
+                                <span class="text-light text-center border-light w-50 bg-danger rounded-1" style=" font-size:small; padding:2px">Reject</span>
+                            }
+                            else if (item.tlSatus == 1)
+                            {
+                                <span class="text-light text-center border-light w-50 bg-success rounded-1" style=" font-size:small; padding:2px">Approved</span>
+                            }
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.tlRession)
+                        </td>
+                   }
+                }
+                @if (User.IsInRole("Manager") || temp == manager || User.IsInRole("Employee"))
+                {
+
+                    temp = ++manager;
+                    
+                    --manager;
+                    if(!User.IsInRole("Manager"))
+                    {
+                        <td>
+                            @if (item.mSatus == 3)
+                            {
+                                <span class="text-light text-center border-warning w-50 bg-warning rounded-1" style=" font-size:small; padding:2px">Pending</span>
+                            }
+                            else if (item.mSatus == 2)
+                            {
+                                <span class="text-light text-center border-light w-50 bg-danger rounded-1" style=" font-size:small; padding:2px">Reject</span>
+                            }
+                            else if (item.mSatus == 1)
+                            {
+                                <span class="text-light text-center border-light w-50 bg-success rounded-1" style=" font-size:small; padding:2px">Approved</span>
+                            }
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.mRession)
+                        </td>
+                    }
+                }
+
+                @if (User.IsInRole("Am") || temp == am || User.IsInRole("Employee"))
+                {
+
+                    temp = ++am;
+                    
+                    --am;
+                    if(!User.IsInRole("Am"))
+                    {
+                        <td>
+                            @if (item.amSatus == 3)
+                            {
+                                <span class="text-light text-center border-warning w-50 bg-warning rounded-1" style=" font-size:small; padding:2px">Pending</span>
+                            }
+                            else if (item.amSatus == 2)
+                            {
+                                <span class="text-light text-center border-light w-50 bg-danger rounded-1" style=" font-size:small; padding:2px">Reject</span>
+                            }
+                            else if (item.amSatus == 1)
+                            {
+                                <span class="text-light text-center border-light w-50 bg-success rounded-1" style=" font-size:small; padding:2px">Approved</span>
+                            }
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.amRession)
+                        </td>
+                    }
+                }
+                @if (User.IsInRole("Gm") || temp == gm || User.IsInRole("Employee"))
+                {
+                    temp = ++gm;
+                    --gm;
+                    
+                    if(!User.IsInRole("Gm"))
+                    {
+                        <td>
+                            @if (item.gmSatus == 3)
+                            {
+                                <span class="text-light text-center border-warning w-50 bg-warning rounded-1" style=" font-size:small; padding:2px">Pending</span>
+
+                            }
+                            else if (item.gmSatus == 2)
+                            {
+                                <span class="text-light text-center border-danger w-50 bg-danger rounded-1" style=" font-size:small; padding:2px">Reject</span>
+                            }
+                            else if (item.gmSatus == 1)
+                            {
+                                <span class="text-light text-center border-success w-50 bg-success rounded-1" style=" font-size:small; padding:2px">Approved</span>
+
+                            }
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.gmRession)
+                        </td>
+                    }
+                    
+                }
+                
+                    <td>
+                        @if (item.hrSatus == 3)
+                        {
+                            <span class="text-light text-center border-warning w-50 bg-warning rounded-1" style=" font-size:small; padding:2px">Pending</span>
+
+                        }
+                        else if (item.hrSatus == 2)
+                        {
+                            <span class="text-light text-center border-danger w-50 bg-danger rounded-1" style=" font-size:small; padding:2px">Reject</span>
+                        }
+                        else if (item.hrSatus == 1)
+                        {
+                            <span class="text-light text-center border-success w-50 bg-success rounded-1" style=" font-size:small; padding:2px">Approved</span>
+
+                        }
+
+                    </td>
+                    
+                
+        </tr>
+}
+    </tbody>
+</table>

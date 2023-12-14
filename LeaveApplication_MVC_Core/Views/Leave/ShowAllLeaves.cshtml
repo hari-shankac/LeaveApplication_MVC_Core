@@ -1,0 +1,238 @@
+﻿@model IEnumerable<LeaveApplication_MVC_Core.Models.LeaveRequest>
+
+@{
+    ViewData["Title"] = "ShowAllLeaves";
+    var value = 3;
+    int number = 1;
+}
+
+
+<h1>ShowAllLeaves</h1>
+
+<table class="table table-striped text-center">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.from)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.to)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.leaveRession)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.hrSatus)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.gmSatus)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.gmRession)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.amSatus)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.amRession)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.mSatus)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.mRession)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.tlSatus)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.tlRession)
+            </th>
+           
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+
+            <th scope="row">@number</th>
+                @{
+                    number += 1;
+                }
+            <td>
+                @Html.DisplayFor(modelItem => item.from)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.to)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.leaveRession)
+            </td>
+                <td>
+                    @if (item.hrSatus == 3)
+                    {
+                        value = item.hrSatus;
+                        <button type="button" class="btn btn-warning btn-sm">Pending</button>
+                    }
+                    else if (item.hrSatus == 2)
+                    {
+                        value = item.hrSatus;
+                        <button type="button" class="btn btn-danger btn-sm">Reject</button>
+                    }
+                    else if (item.hrSatus == 1)
+                    {
+                        value = item.hrSatus;
+                        <button type="button" class="btn btn-success btn-sm">Approved</button>
+                    }
+
+                </td>
+                <td>
+                    @if (item.gmSatus == 3)
+                    {
+                        <button type="button" class="btn btn-warning btn-sm">Pending</button>
+                    }
+                    else if (item.gmSatus == 2)
+                    {
+                        <button type="button" class="btn btn-danger btn-sm">Reject</button>
+                    }
+                    else if (item.gmSatus == 1)
+                    {
+                        <button type="button" class="btn btn-success btn-sm">Approved</button>
+                    }
+
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.gmRession)
+            </td>
+                <td>
+                    @if (item.amSatus == 3)
+                    {
+                        <button type="button" class="btn btn-warning btn-sm">Pending</button>
+                    }
+                    else if (item.amSatus == 2)
+                    {
+                        <button type="button" class="btn btn-danger btn-sm">Reject</button>
+                    }
+                    else if (item.amSatus == 1)
+                    {
+                        <button type="button" class="btn btn-success btn-sm">Approved</button>
+                    }
+
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.amRession)
+            </td>
+                <td>
+                    @if (item.mSatus == 3)
+                    {
+                        <button type="button" class="btn btn-warning btn-sm">Pending</button>
+                    }
+                    else if (item.mSatus == 2)
+                    {
+                        <button type="button" class="btn btn-danger btn-sm">Reject</button>
+                    }
+                    else if (item.mSatus == 1)
+                    {
+                        <button type="button" class="btn btn-success btn-sm">Approved</button>
+                    }
+
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.mRession)
+            </td>
+                <td>
+                    @if (item.tlSatus == 3)
+                    {
+                        <button type="button" class="btn btn-warning btn-sm">Pending</button>
+                    }
+                    else if (item.tlSatus == 2)
+                    {
+                        <button type="button" class="btn btn-danger btn-sm">Reject</button>
+                    }
+                    else if (item.tlSatus == 1)
+                    {
+                        <button type="button" class="btn btn-success btn-sm">Approved</button>
+                    }
+
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.tlRession)
+            </td>
+           
+            @if(value==3)
+                {
+                    <td>@* 
+                        @Html.ActionLink("Approve", "Approved", new { id=item.leaveId }, new { @class = "btn btn-success"})
+                        @Html.ActionLink("Reject", "Rejected", new { id=item.leaveId } , new { @class = "btn btn-danger"}) *@
+                        <div class="row">
+                            <div class="col-5">
+                                <button type="button" class="btn btn-sm btn-success" onclick="approveFunction(@item.leaveId)">
+                                    Approve
+                                </button>
+                            </div>
+                            <div class="=col-5">
+                                <button type="button" class="btn btn-sm btn-danger" onclick="RejectFunction(@item.leaveId)">
+                                    Reject
+                                </button>
+                            </div>
+                        </div>
+                        
+                        
+                    </td>
+                }
+            </tr>
+}
+    </tbody>
+</table>
+<script>
+
+    function approveFunction(leaveId) {
+        var reason = "default";
+
+        $.ajax({
+            url: '/Leave/Approved',
+            type: 'POST',
+            data: {
+                id: leaveId,
+                reason: reason
+            },
+            success: function (response) {
+                location.reload();
+            },
+            error: function (xhr, status, error) {
+                debugger;
+                if (xhr.status === 400) {
+                    // Bad Request (status code 400) - Display error message
+                    var errorMessage = xhr.responseText; // Fetch error message from response
+                    alert(errorMessage); // Display error message using Toastr or any other notification library
+                }
+            }
+        });
+    }
+    function RejectFunction(leaveId) {
+        var reason = "default";
+
+        $.ajax({
+            url: '/Leave/Rejected',
+            type: 'POST',
+            data: {
+                id: leaveId,
+                reason: reason
+            },
+            success: function (response) {
+                location.reload();
+            },
+            error: function (xhr, status, error) {
+                debugger;
+                if (xhr.status === 400) {
+                    // Bad Request (status code 400) - Display error message
+                    var errorMessage = xhr.responseText; // Fetch error message from response
+                    alert(errorMessage); // Display error message using Toastr or any other notification library
+                }
+            }
+        });
+    }
+
+
+</script>
